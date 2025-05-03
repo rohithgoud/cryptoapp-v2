@@ -95,10 +95,10 @@ setCurrency(e.target.value)
       <td>
         <div ><Link className='font-semibold text-gray-600 text-lg' to={`/coin/${i.id}`}>{i.symbol.toUpperCase()}</Link></div>
       </td>
-      <td><Link to={`/coin/${i.id}` } className=" text-lg font-normal">{currencySymbol} {i.current_price.toLocaleString()}</Link> </td>
+      <td><Link to={`/coin/${i.id}` } className=" text-lg font-normal">{currencySymbol} {i.current_price?.toLocaleString()}</Link> </td>
       <td className={i.price_change_percentage_24h > 0 ? "text-green-500" : "text-red-600"}>{i.price_change_percentage_24h.toFixed(2)}%</td>
-      <td className='w-[200px] hidden md:table-cell text-lg font-normal'>{currencySymbol} {i.total_volume.toLocaleString()}</td>
-      <td className='w-[200px] hidden md:table-cell text-lg font-normal' >{currencySymbol} {i.market_cap.toLocaleString()}</td>
+      <td className='w-[200px] hidden md:table-cell text-lg font-normal'>{currencySymbol} {i.total_volume?.toLocaleString()}</td>
+      <td className='w-[200px] hidden md:table-cell text-lg font-normal' >{currencySymbol} {i.market_cap?.toLocaleString()}</td>
     </tr>
 
 
