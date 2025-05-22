@@ -7,9 +7,7 @@ import Coindetails from './components/Coindetails';
 import Signup from './components/Signup';
 import Nft from './components/Nft';
 import NftDetails from './components/NftDetails';
-
-
-
+import NotFound from './components/NotFound';
 
 function App() {
 
@@ -26,6 +24,7 @@ function App() {
           <Route path="/signup" element={<Signup/>} />
           <Route path="/Nft" element={<Nft/>} />
           <Route path="/Nft/:id" element={<NftDetails/>} />
+          <Route path="*" element={<NotFound />} />
          
         </Routes>
       </Router>

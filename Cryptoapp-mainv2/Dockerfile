@@ -1,34 +1,35 @@
-#Stage 1: Build the React app
+# Stage 1: Build the React app
 FROM node:20-alpine AS builder
 
-#Setting the working directory
 WORKDIR /app
 
-#Copying the depenedencies
-COPY package*.json ./
+# Copy package files and install dependencies
+COPY package.json package-lock.json ./
+# Consider adding --frozen-lockfile or --ci for more deterministic builds
+RUN npm ci
 
-#Installing the dependencies
-RUN npm install
+# Copy source code and configuration files
+COPY public ./public
+COPY src ./src
+COPY tailwind.config.js postcss.config.js ./
 
-#Copying the source code
-COPY . .
+# If you have other root config files (babel.config.js, craco.config.js, etc.), copy them too
+# COPY babel.config.js ./
 
-#Building the project
 RUN npm run build
 
-# Stage 2: Serve the app using `serve`
-FROM node:20-alpine
+# Stage 2: Serve the app using Nginx
+FROM nginx:stable-alpine
 
-WORKDIR /app
+# Remove default Nginx welcome page
+RUN rm -rf /usr/share/nginx/html/*
 
-# Install a simple static file server
-RUN npm install -g serve
+# Copy built React app from builder stage
+COPY --from=builder /app/build /usr/share/nginx/html
 
-# Copy built React app from builder
-COPY --from=builder /app/build ./build
+# Copy custom Nginx configuration
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Expose port
-EXPOSE 3000
+EXPOSE 80
 
-# Serve the app
-CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["nginx", "-g", "daemon off;"]
